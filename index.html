@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Live</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">📊 Admin Panel</div>
+            <nav>
+                <button class="nav-btn active" onclick="switchTab('dashboard')">📈 Dashboard</button>
+                <button class="nav-btn" onclick="switchTab('domains')">🌐 Domains</button>
+                <button class="nav-btn" onclick="switchTab('links')">🔗 Links</button>
+                <button class="nav-btn" onclick="switchTab('tracking')">📱 Click Tracking</button>
+                <button class="nav-btn" onclick="switchTab('analytics')">📊 Analytics</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1>🎯 Real-Time Admin Dashboard</h1>
+                <div class="header-info">
+                    <span id="live-status" class="live-badge">🔴 LIVE</span>
+                    <span id="last-update">Last Update: Now</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Tab -->
+            <section id="dashboard-tab" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">📊 Total Clicks</div>
+                        <div class="stat-value" id="total-clicks">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">🌐 Active Domains</div>
+                        <div class="stat-value" id="active-domains">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">🔗 Total Links</div>
+                        <div class="stat-value" id="total-links">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">📱 Mobile Clicks</div>
+                        <div class="stat-value" id="mobile-clicks">0</div>
+                    </div>
+                </div>
+
+                <!-- Live Data Feed -->
+                <div class="live-feed-container">
+                    <h2>📡 Live Data Feed (Updates Every 5 Seconds)</h2>
+                    <div id="live-feed" class="live-feed"></div>
+                </div>
+            </section>
+
+            <!-- Domains Tab -->
+            <section id="domains-tab" class="tab-content">
+                <div class="card">
+                    <h2>🌐 Domain Management</h2>
+                    <div class="form-group">
+                        <input type="text" id="domain-input" placeholder="Enter domain (e.g., example.com)" class="input-field">
+                        <button onclick="addDomain()" class="btn btn-primary">Add Domain</button>
+                    </div>
+                    <div id="domains-list" class="domains-list"></div>
+                </div>
+            </section>
+
+            <!-- Links Tab -->
+            <section id="links-tab" class="tab-content">
+                <div class="card">
+                    <h2>🔗 Link Management</h2>
+                    <div class="form-group">
+                        <input type="text" id="link-url" placeholder="Enter link URL" class="input-field">
+                        <textarea id="link-comment" placeholder="Comment about this link" class="input-field" rows="3"></textarea>
+                        <select id="link-type" class="input-field">
+                            <option value="normal">Normal Link</option>
+                            <option value="bad">Bad Content</option>
+                            <option value="spam">Spam</option>
+                        </select>
+                        <button onclick="addLink()" class="btn btn-primary">Add Link</button>
+                    </div>
+                    <div id="links-list" class="links-list"></div>
+                </div>
+            </section>
+
+            <!-- Tracking Tab -->
+            <section id="tracking-tab" class="tab-content">
+                <div class="card">
+                    <h2>📱 Click Tracking Log</h2>
+                    <div class="tracking-info">
+                        <button onclick="clearTracking()" class="btn btn-danger">Clear Log</button>
+                        <button onclick="exportTracking()" class="btn btn-success">Export Data</button>
+                    </div>
+                    <table id="tracking-table" class="tracking-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Link</th>
+                                <th>Device Type</th>
+                                <th>Domain</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tracking-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Analytics Tab -->
+            <section id="analytics-tab" class="tab-content">
+                <div class="card">
+                    <h2>📊 Analytics Report</h2>
+                    <div class="analytics-grid">
+                        <div class="analytics-box">
+                            <h3>Device Breakdown</h3>
+                            <canvas id="device-chart" width="300" height="200"></canvas>
+                        </div>
+                        <div class="analytics-box">
+                            <h3>Top Domains</h3>
+                            <div id="top-domains" class="top-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

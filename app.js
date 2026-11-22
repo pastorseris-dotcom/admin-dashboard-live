@@ -15,25 +15,49 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDomains();
     renderLinks();
     renderTracking();
+    addInitialFeedMessage();
 });
 
+function addInitialFeedMessage() {
+    const feed = document.getElementById('live-feed');
+    if (!feed || feed.children.length > 0) return;
+    const item = document.createElement('div');
+    item.className = 'feed-item';
+    const time = document.createElement('div');
+    time.className = 'feed-time';
+    time.textContent = `⏰ ${new Date().toLocaleTimeString('bn-BD')}`;
+    const content = document.createElement('div');
+    content.className = 'feed-content';
+    content.textContent = '✅ Dashboard is ready';
+    item.append(time, content);
+    feed.appendChild(item);
+}
+
 // Tab Switching
-function switchTab(tabName) {
+function switchTab(tabName, button) {
     // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
+        tab.setAttribute('aria-hidden', 'true');
     });
 
     // Remove active class from all buttons
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
     });
 
     // Show selected tab
-    document.getElementById(tabName + '-tab').classList.add('active');
+    const selectedTab = document.getElementById(tabName + '-tab');
+    if (!selectedTab) return;
+    selectedTab.classList.add('active');
+    selectedTab.setAttribute('aria-hidden', 'false');
 
     // Add active class to clicked button
-    event.target.classList.add('active');
+    if (button) {
+        button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+    }
 }
 
 // Live Data Feed (Updates Every 5 Seconds)
@@ -94,23 +118,47 @@ function addDomain() {
     saveDataToLocalStorage();
 }
 
+function isValidWebUrl(value) {
+    try {
+        const url = new URL(value);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
 // Render Domains
 function renderDomains() {
     const list = document.getElementById('domains-list');
     list.innerHTML = '';
 
+    if (dashboardData.domains.length === 0) {
+        showEmptyState(list, 'No domains added yet');
+        return;
+    }
+
     dashboardData.domains.forEach((domain, index) => {
         const item = document.createElement('div');
         item.className = 'domain-item';
-        item.innerHTML = `
-            <div>
-                <div class="domain-name">🌐 ${domain}</div>
-            </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <span class="domain-status">Active</span>
-                <button onclick="removeDomain(${index})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">Remove</button>
-            </div>
-        `;
+        const details = document.createElement('div');
+        const name = document.createElement('div');
+        name.className = 'domain-name';
+        name.textContent = `🌐 ${domain}`;
+        details.appendChild(name);
+
+        const actions = document.createElement('div');
+        actions.style.cssText = 'display: flex; gap: 10px; align-items: center;';
+        const status = document.createElement('span');
+        status.className = 'domain-status';
+        status.textContent = 'Active';
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-danger';
+        removeButton.style.cssText = 'padding: 5px 10px; font-size: 12px;';
+        removeButton.textContent = 'Remove';
+        removeButton.addEventListener('click', () => removeDomain(index));
+        actions.append(status, removeButton);
+        item.append(details, actions);
         list.appendChild(item);
     });
 }
@@ -133,9 +181,18 @@ function addLink() {
         alert('Please enter a link URL');
         return;
     }
+    if (!isValidWebUrl(url)) {
+        alert('Please enter a valid HTTP or HTTPS link');
+        document.getElementById('link-url').focus();
+        return;
+    }
+    if (!['normal', 'bad', 'spam'].includes(type)) {
+        alert('Please select a valid link type');
+        return;
+    }
 
     dashboardData.links.push({
-        url: url,
+        url: new URL(url).href,
         comment: comment,
         type: type,
         timestamp: new Date()
@@ -155,19 +212,44 @@ function renderLinks() {
     const list = document.getElementById('links-list');
     list.innerHTML = '';
 
+    if (dashboardData.links.length === 0) {
+        showEmptyState(list, 'No links added yet');
+        return;
+    }
+
     dashboardData.links.forEach((link, index) => {
         const item = document.createElement('div');
         item.className = `link-item ${link.type}`;
-        item.innerHTML = `
-            <div class="link-details">
-                <a href="${link.url}" target="_blank" class="link-url" onclick="trackClick('${link.url}', '${link.type}')">🔗 ${link.url}</a>
-                ${link.comment ? `<div class="link-comment">💬 ${link.comment}</div>` : ''}
-            </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <span class="link-type-badge ${link.type}">${link.type.toUpperCase()}</span>
-                <button onclick="removeLink(${index})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">Remove</button>
-            </div>
-        `;
+        const details = document.createElement('div');
+        details.className = 'link-details';
+        const anchor = document.createElement('a');
+        anchor.href = link.url;
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.className = 'link-url';
+        anchor.textContent = `🔗 ${link.url}`;
+        anchor.addEventListener('click', () => trackClick(link.url, link.type));
+        details.appendChild(anchor);
+        if (link.comment) {
+            const comment = document.createElement('div');
+            comment.className = 'link-comment';
+            comment.textContent = `💬 ${link.comment}`;
+            details.appendChild(comment);
+        }
+
+        const actions = document.createElement('div');
+        actions.style.cssText = 'display: flex; gap: 10px; align-items: center;';
+        const badge = document.createElement('span');
+        badge.className = `link-type-badge ${link.type}`;
+        badge.textContent = link.type.toUpperCase();
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-danger';
+        removeButton.style.cssText = 'padding: 5px 10px; font-size: 12px;';
+        removeButton.textContent = 'Remove';
+        removeButton.addEventListener('click', () => removeLink(index));
+        actions.append(badge, removeButton);
+        item.append(details, actions);
         list.appendChild(item);
     });
 }
@@ -180,8 +262,16 @@ function removeLink(index) {
     saveDataToLocalStorage();
 }
 
+function showEmptyState(container, message) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = message;
+    container.appendChild(empty);
+}
+
 // Track Click
 function trackClick(url, type) {
+    if (!isValidWebUrl(url)) return;
     const deviceType = /Mobile|Android|iPhone/.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
     const domain = new URL(url).hostname;
 
@@ -214,15 +304,36 @@ function renderTracking() {
     const tbody = document.getElementById('tracking-body');
     tbody.innerHTML = '';
 
+    if (dashboardData.clicks.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 5;
+        cell.className = 'empty-state';
+        cell.textContent = 'No tracking events yet';
+        row.appendChild(cell);
+        tbody.appendChild(row);
+        return;
+    }
+
     dashboardData.clicks.forEach(click => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${click.timestamp.toLocaleTimeString('bn-BD')}</td>
-            <td><a href="${click.url}" target="_blank" style="color: #3498db;">Link</a></td>
-            <td>${click.deviceType}</td>
-            <td>${click.domain}</td>
-            <td>${click.ip}</td>
-        `;
+        const timestamp = document.createElement('td');
+        timestamp.textContent = click.timestamp.toLocaleTimeString('bn-BD');
+        const linkCell = document.createElement('td');
+        const anchor = document.createElement('a');
+        anchor.href = isValidWebUrl(click.url) ? click.url : '#';
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.style.color = '#3498db';
+        anchor.textContent = 'Link';
+        linkCell.appendChild(anchor);
+        const values = [click.deviceType, click.domain, click.ip];
+        row.append(timestamp, linkCell);
+        values.forEach(value => {
+            const cell = document.createElement('td');
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
         tbody.appendChild(row);
     });
 }
@@ -241,14 +352,21 @@ function clearTracking() {
 
 // Export Tracking
 function exportTracking() {
-    const data = JSON.stringify(dashboardData, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `admin-dashboard-${new Date().toISOString()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+        const data = JSON.stringify(dashboardData, null, 2);
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `admin-dashboard-${new Date().toISOString()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 0);
+    } catch (error) {
+        alert('Unable to export dashboard data.');
+        console.error('Failed to export dashboard data:', error);
+    }
 }
 
 // Update Stats
@@ -273,16 +391,23 @@ function updateAnalytics() {
     const topDomainsDiv = document.getElementById('top-domains');
     topDomainsDiv.innerHTML = '';
 
+    if (Object.keys(domainCounts).length === 0) {
+        showEmptyState(topDomainsDiv, 'No domain clicks yet');
+    }
+
     Object.entries(domainCounts)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5)
         .forEach(([domain, count]) => {
             const item = document.createElement('div');
             item.className = 'top-item';
-            item.innerHTML = `
-                <span class="top-domain">${domain}</span>
-                <span class="top-count">${count}</span>
-            `;
+            const domainName = document.createElement('span');
+            domainName.className = 'top-domain';
+            domainName.textContent = domain;
+            const domainCount = document.createElement('span');
+            domainCount.className = 'top-count';
+            domainCount.textContent = count;
+            item.append(domainName, domainCount);
             topDomainsDiv.appendChild(item);
         });
 
@@ -335,30 +460,78 @@ function drawSimpleChart(data) {
 
 // Local Storage
 function saveDataToLocalStorage() {
-    const dataToSave = {
-        domains: dashboardData.domains,
-        links: dashboardData.links,
-        clicks: dashboardData.clicks.map(click => ({
-            ...click,
-            timestamp: click.timestamp.toISOString()
-        })),
-        totalClicks: dashboardData.totalClicks,
-        mobileClicks: dashboardData.mobileClicks
-    };
-    localStorage.setItem('adminDashboardData', JSON.stringify(dataToSave));
+    try {
+        const dataToSave = {
+            domains: dashboardData.domains,
+            links: dashboardData.links,
+            clicks: dashboardData.clicks.map(click => {
+                const timestamp = click.timestamp instanceof Date
+                    ? click.timestamp
+                    : new Date(click.timestamp);
+                return {
+                    ...click,
+                    timestamp: Number.isNaN(timestamp.getTime()) ? new Date().toISOString() : timestamp.toISOString()
+                };
+            }),
+            totalClicks: dashboardData.totalClicks,
+            mobileClicks: dashboardData.mobileClicks
+        };
+        localStorage.setItem('adminDashboardData', JSON.stringify(dataToSave));
+    } catch (error) {
+        alert('Unable to save dashboard data in this browser.');
+        console.error('Failed to save dashboard data:', error);
+    }
 }
 
 function loadDataFromLocalStorage() {
-    const saved = localStorage.getItem('adminDashboardData');
-    if (saved) {
+    try {
+        const saved = localStorage.getItem('adminDashboardData');
+        if (!saved) return;
+
         const data = JSON.parse(saved);
-        dashboardData.domains = data.domains || [];
-        dashboardData.links = data.links || [];
-        dashboardData.clicks = (data.clicks || []).map(click => ({
-            ...click,
-            timestamp: new Date(click.timestamp)
-        }));
-        dashboardData.totalClicks = data.totalClicks || 0;
-        dashboardData.mobileClicks = data.mobileClicks || 0;
+        dashboardData.domains = Array.isArray(data.domains)
+            ? data.domains.filter(domain => typeof domain === 'string')
+            : [];
+        dashboardData.links = Array.isArray(data.links)
+            ? data.links.filter(link =>
+                link &&
+                typeof link.url === 'string' &&
+                isValidWebUrl(link.url) &&
+                ['normal', 'bad', 'spam'].includes(link.type)
+            ).map(link => ({
+                ...link,
+                url: new URL(link.url).href,
+                comment: typeof link.comment === 'string' ? link.comment : ''
+            }))
+            : [];
+        dashboardData.clicks = Array.isArray(data.clicks)
+            ? data.clicks.map(click => {
+                const timestamp = new Date(click?.timestamp);
+                return {
+                    ...click,
+                    timestamp: Number.isNaN(timestamp.getTime()) ? new Date() : timestamp
+                };
+            }).filter(click => isValidWebUrl(click.url))
+            : [];
+        dashboardData.totalClicks = Number.isFinite(data.totalClicks)
+            ? data.totalClicks
+            : dashboardData.clicks.length;
+        dashboardData.mobileClicks = Number.isFinite(data.mobileClicks)
+            ? data.mobileClicks
+            : dashboardData.clicks.filter(click => click.deviceType === 'Mobile').length;
+    } catch (error) {
+        console.error('Saved dashboard data is invalid and was reset:', error);
+        try {
+            localStorage.removeItem('adminDashboardData');
+        } catch (storageError) {
+            console.error('Failed to clear invalid dashboard data:', storageError);
+        }
+        dashboardData = {
+            domains: [],
+            links: [],
+            clicks: [],
+            totalClicks: 0,
+            mobileClicks: 0
+        };
     }
 }

@@ -1,132 +1,214 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Live</title>
+    <meta name="theme-color" content="#10131f">
+    <meta name="description" content="Live administration dashboard for domains, links, tracking, and analytics.">
+    <title>Nexus — Live Admin Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
+    <div class="app-shell">
         <aside class="sidebar">
-            <div class="logo">📊 Admin Panel</div>
-            <nav>
-                <button class="nav-btn active" onclick="switchTab('dashboard')">📈 Dashboard</button>
-                <button class="nav-btn" onclick="switchTab('domains')">🌐 Domains</button>
-                <button class="nav-btn" onclick="switchTab('links')">🔗 Links</button>
-                <button class="nav-btn" onclick="switchTab('tracking')">📱 Click Tracking</button>
-                <button class="nav-btn" onclick="switchTab('analytics')">📊 Analytics</button>
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">N</div>
+                <div>
+                    <div class="brand-name">Nexus</div>
+                    <div class="brand-subtitle">Admin workspace</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Dashboard sections" role="tablist">
+                <button type="button" class="nav-btn active" role="tab" onclick="switchTab('dashboard', this)" aria-controls="dashboard-tab" aria-selected="true">
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+                    <span>Overview</span>
+                </button>
+                <button type="button" class="nav-btn" role="tab" onclick="switchTab('domains', this)" aria-controls="domains-tab" aria-selected="false">
+                    <span class="nav-icon" aria-hidden="true">◎</span>
+                    <span>Domains</span>
+                </button>
+                <button type="button" class="nav-btn" role="tab" onclick="switchTab('links', this)" aria-controls="links-tab" aria-selected="false">
+                    <span class="nav-icon" aria-hidden="true">↗</span>
+                    <span>Links</span>
+                </button>
+                <button type="button" class="nav-btn" role="tab" onclick="switchTab('tracking', this)" aria-controls="tracking-tab" aria-selected="false">
+                    <span class="nav-icon" aria-hidden="true">◫</span>
+                    <span>Tracking</span>
+                </button>
+                <button type="button" class="nav-btn" role="tab" onclick="switchTab('analytics', this)" aria-controls="analytics-tab" aria-selected="false">
+                    <span class="nav-icon" aria-hidden="true">▥</span>
+                    <span>Analytics</span>
+                </button>
             </nav>
+
+            <div class="sidebar-footer">
+                <span class="presence-dot" aria-hidden="true"></span>
+                <div>
+                    <strong>System operational</strong>
+                    <small>All services live</small>
+                </div>
+            </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Header -->
             <header class="header">
-                <h1>🎯 Real-Time Admin Dashboard</h1>
-                <div class="header-info">
-                    <span id="live-status" class="live-badge">🔴 LIVE</span>
-                    <span id="last-update">Last Update: Now</span>
+                <div>
+                    <p class="eyebrow">Workspace / Live operations</p>
+                    <h1>Good morning, Admin</h1>
+                </div>
+                <div class="header-actions">
+                    <span id="live-status" class="live-badge" role="status">
+                        <span aria-hidden="true"></span> Live
+                    </span>
+                    <span id="last-update" class="last-update">Updated just now</span>
                 </div>
             </header>
 
-            <!-- Dashboard Tab -->
-            <section id="dashboard-tab" class="tab-content active">
+            <section id="dashboard-tab" class="tab-content active" role="tabpanel" aria-hidden="false">
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-title">📊 Total Clicks</div>
+                    <article class="stat-card accent-violet">
+                        <div class="stat-heading">
+                            <span>Total clicks</span>
+                            <span class="stat-icon" aria-hidden="true">↗</span>
+                        </div>
                         <div class="stat-value" id="total-clicks">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">🌐 Active Domains</div>
+                        <div class="stat-trend">Across all tracked links</div>
+                    </article>
+                    <article class="stat-card accent-green">
+                        <div class="stat-heading">
+                            <span>Active domains</span>
+                            <span class="stat-icon" aria-hidden="true">◎</span>
+                        </div>
                         <div class="stat-value" id="active-domains">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">🔗 Total Links</div>
+                        <div class="stat-trend">Currently monitored</div>
+                    </article>
+                    <article class="stat-card accent-blue">
+                        <div class="stat-heading">
+                            <span>Total links</span>
+                            <span class="stat-icon" aria-hidden="true">⌁</span>
+                        </div>
                         <div class="stat-value" id="total-links">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">📱 Mobile Clicks</div>
+                        <div class="stat-trend">Saved in workspace</div>
+                    </article>
+                    <article class="stat-card accent-orange">
+                        <div class="stat-heading">
+                            <span>Mobile clicks</span>
+                            <span class="stat-icon" aria-hidden="true">▯</span>
+                        </div>
                         <div class="stat-value" id="mobile-clicks">0</div>
-                    </div>
+                        <div class="stat-trend">From mobile devices</div>
+                    </article>
                 </div>
 
-                <!-- Live Data Feed -->
-                <div class="live-feed-container">
-                    <h2>📡 Live Data Feed (Updates Every 5 Seconds)</h2>
-                    <div id="live-feed" class="live-feed"></div>
-                </div>
+                <section class="panel live-feed-container">
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-kicker">Real-time activity</p>
+                            <h2>Live data feed</h2>
+                        </div>
+                        <span class="refresh-label">Refreshes every 5 sec</span>
+                    </div>
+                    <div id="live-feed" class="live-feed" aria-live="polite"></div>
+                </section>
             </section>
 
-            <!-- Domains Tab -->
-            <section id="domains-tab" class="tab-content">
-                <div class="card">
-                    <h2>🌐 Domain Management</h2>
-                    <div class="form-group">
-                        <input type="text" id="domain-input" placeholder="Enter domain (e.g., example.com)" class="input-field">
-                        <button onclick="addDomain()" class="btn btn-primary">Add Domain</button>
+            <section id="domains-tab" class="tab-content" role="tabpanel" aria-hidden="true">
+                <section class="panel management-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-kicker">Infrastructure</p>
+                            <h2>Domain management</h2>
+                        </div>
+                    </div>
+                    <div class="form-group inline-form">
+                        <label for="domain-input" class="field-label">Domain name</label>
+                        <input type="text" id="domain-input" placeholder="example.com" class="input-field" autocomplete="off">
+                        <button type="button" onclick="addDomain()" class="btn btn-primary">Add domain</button>
                     </div>
                     <div id="domains-list" class="domains-list"></div>
-                </div>
+                </section>
             </section>
 
-            <!-- Links Tab -->
-            <section id="links-tab" class="tab-content">
-                <div class="card">
-                    <h2>🔗 Link Management</h2>
-                    <div class="form-group">
-                        <input type="text" id="link-url" placeholder="Enter link URL" class="input-field">
-                        <textarea id="link-comment" placeholder="Comment about this link" class="input-field" rows="3"></textarea>
-                        <select id="link-type" class="input-field">
-                            <option value="normal">Normal Link</option>
-                            <option value="bad">Bad Content</option>
-                            <option value="spam">Spam</option>
-                        </select>
-                        <button onclick="addLink()" class="btn btn-primary">Add Link</button>
+            <section id="links-tab" class="tab-content" role="tabpanel" aria-hidden="true">
+                <section class="panel management-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-kicker">Campaign tools</p>
+                            <h2>Link management</h2>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="link-url" class="field-label">Link URL</label>
+                            <input type="url" id="link-url" placeholder="https://example.com" class="input-field" autocomplete="url">
+                        </div>
+                        <div class="form-group">
+                            <label for="link-type" class="field-label">Classification</label>
+                            <select id="link-type" class="input-field">
+                                <option value="normal">Normal</option>
+                                <option value="bad">Bad content</option>
+                                <option value="spam">Spam</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-wide">
+                            <label for="link-comment" class="field-label">Comment</label>
+                            <textarea id="link-comment" placeholder="Add a note about this link" class="input-field" rows="3"></textarea>
+                        </div>
+                        <button type="button" onclick="addLink()" class="btn btn-primary form-submit">Add link</button>
                     </div>
                     <div id="links-list" class="links-list"></div>
-                </div>
+                </section>
             </section>
 
-            <!-- Tracking Tab -->
-            <section id="tracking-tab" class="tab-content">
-                <div class="card">
-                    <h2>📱 Click Tracking Log</h2>
-                    <div class="tracking-info">
-                        <button onclick="clearTracking()" class="btn btn-danger">Clear Log</button>
-                        <button onclick="exportTracking()" class="btn btn-success">Export Data</button>
+            <section id="tracking-tab" class="tab-content" role="tabpanel" aria-hidden="true">
+                <section class="panel management-panel">
+                    <div class="panel-header tracking-header">
+                        <div>
+                            <p class="panel-kicker">Event log</p>
+                            <h2>Click tracking</h2>
+                        </div>
+                        <div class="tracking-info">
+                            <button type="button" onclick="clearTracking()" class="btn btn-danger">Clear log</button>
+                            <button type="button" onclick="exportTracking()" class="btn btn-success">Export data</button>
+                        </div>
                     </div>
-                    <table id="tracking-table" class="tracking-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Link</th>
-                                <th>Device Type</th>
-                                <th>Domain</th>
-                                <th>IP Address</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tracking-body"></tbody>
-                    </table>
-                </div>
+                    <div class="table-wrap">
+                        <table id="tracking-table" class="tracking-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Link</th>
+                                    <th>Device</th>
+                                    <th>Domain</th>
+                                    <th>IP address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tracking-body"></tbody>
+                        </table>
+                    </div>
+                </section>
             </section>
 
-            <!-- Analytics Tab -->
-            <section id="analytics-tab" class="tab-content">
-                <div class="card">
-                    <h2>📊 Analytics Report</h2>
+            <section id="analytics-tab" class="tab-content" role="tabpanel" aria-hidden="true">
+                <section class="panel management-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-kicker">Performance</p>
+                            <h2>Analytics report</h2>
+                        </div>
+                    </div>
                     <div class="analytics-grid">
                         <div class="analytics-box">
-                            <h3>Device Breakdown</h3>
-                            <canvas id="device-chart" width="300" height="200"></canvas>
+                            <h3>Device breakdown</h3>
+                            <canvas id="device-chart" width="300" height="200" role="img" aria-label="Mobile and desktop click chart"></canvas>
                         </div>
                         <div class="analytics-box">
-                            <h3>Top Domains</h3>
+                            <h3>Top domains</h3>
                             <div id="top-domains" class="top-list"></div>
                         </div>
                     </div>
-                </div>
+                </section>
             </section>
         </main>
     </div>

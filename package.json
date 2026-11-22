@@ -1,0 +1,9 @@
+{
+  "name": "admin-dashboard-live",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "validate": "node --check app.js && node test/project.test.js",
+    "test": "node --test"
+  }
+}

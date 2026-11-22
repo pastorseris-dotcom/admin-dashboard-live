@@ -1,110 +1,65 @@
-# Admin Dashboard Live 🎯
+# Nexus Admin Dashboard
 
-একটি সম্পূর্ণ রিয়েল-টাইম Admin Dashboard যেখানে লাইভ ডেটা ফিড, ডোমেইন ম্যানেজমেন্ট, লিংক ট্র্যাকিং এবং ক্লিক এনালিটিক্স রয়েছে।
+A lightweight, responsive browser dashboard for organizing domains and links, viewing locally recorded link clicks, and exploring basic analytics.
 
-## ✨ ফিচার
+> **Demo only:** This project does not connect to a server or collect real traffic. The activity feed is simulated, domain status is a display label, and IP addresses shown in the click log are randomly generated placeholders.
 
-### 📊 Dashboard Tab
-- **Real-Time Stats**: টোটাল ক্লিক, অ্যাক্টিভ ডোমেইন, টোটাল লিংক, মোবাইল ক্লিক
-- **Live Feed**: প্রতি 5 সেকেন্ডে আপডেট হওয়া লাইভ ডেটা ফিড
-- **Live Badge**: সিস্টেম অনলাইন স্ট্যাটাস দেখায়
+## Features
 
-### 🌐 Domain Management
-- নতুন ডোমেইন যোগ করুন
-- ডোমেইন লিস্ট দেখুন এবং স্ট্যাটাস চেক করুন
-- অপ্রয়োজনীয় ডোমেইন মুছুন
+- **Overview:** click, domain, link, and mobile-click totals with a simulated activity feed.
+- **Domains:** add and remove domain names. Domains are saved locally; they are not monitored or checked.
+- **Links:** save HTTP/HTTPS links with a comment and a classification (normal, bad content, or spam).
+- **Click tracking:** record a local event when a saved link is opened, including its URL, time, device category, domain, and a fabricated IP placeholder.
+- **Analytics:** view a simple mobile-versus-desktop chart and the most-clicked domains.
+- **Export and clear:** export dashboard data as JSON or clear the click log.
+- **Responsive interface:** layouts adapt to desktop, tablet, and mobile screens.
 
-### 🔗 Link Management
-- **নরমাল, খারাপ এবং স্প্যাম** ক্যাটাগরিতে লিংক যোগ করুন
-- লিংকের জন্য কমেন্ট যোগ করুন
-- লিংক টাইপ অনুযায়ী কালার-কোডেড ব্যাজ
-- লিংক ক্লিক করলে স্বয়ংক্রিয়ভাবে ট্র্যাক হয়
+## Run locally
 
-### 📱 Click Tracking
-- সব ক্লিকের বিস্তারিত লগ টেবিল
-- ডিভাইস টাইপ শনাক্ত করা (Mobile/Desktop)
-- ডোমেইন নির্ণয় করা
-- র্যান্ডম IP এড্রেস জেনারেশন
-- ট্র্যাকিং ডেটা এক্সপোর্ট করার সুবিধা
+The app has no runtime package dependencies. Clone the repository and serve the files from a local web server:
 
-### 📊 Analytics Report
-- **Device Breakdown**: মোবাইল vs ডেস্কটপ চার্ট
-- **Top Domains**: সবচেয়ে বেশি ক্লিক পাওয়া ডোমেইন
-- রিয়েল-টাইম স্ট্যাটিস্টিক্স
-
-## 🚀 ব্যবহার করার উপায়
-
-### ১. প্রজেক্ট ডাউনলোড বা ক্লোন করুন
 ```bash
 git clone https://github.com/pastorseris-dotcom/admin-dashboard-live.git
 cd admin-dashboard-live
+python3 -m http.server 8000
 ```
 
-### ২. ফাইল খুলুন
-`index.html` ফাইলটি কোনো ওয়েব ব্রাউজারে খুলুন।
+Open [http://localhost:8000](http://localhost:8000) in a browser. You can also open `index.html` directly, but serving the project over HTTP provides a consistent browser origin for local storage.
 
-### ৩. বৈশিষ্ট্য ব্যবহার করুন
+## Use the dashboard
 
-**ডোমেইন যোগ করতে:**
-- "🌐 Domains" ট্যাবে যান
-- ডোমেইন নাম লিখুন (যেমন: `example.com`)
-- "Add Domain" বাটনে ক্লিক করুন
+1. Add domain names in **Domains**. This only saves names in the dashboard; it does not verify ownership or availability.
+2. Add an HTTP or HTTPS URL in **Links**, optionally including a comment and classification.
+3. Open a saved link to add a click event to the local tracking log.
+4. Visit **Tracking** to review or export events, or clear the click log.
+5. Visit **Analytics** to see the device breakdown and top domains for locally recorded events.
 
-**লিংক ম্যানেজ করতে:**
-- "🔗 Links" ট্যাবে যান
-- URL, কমেন্ট এবং টাইপ নির্বাচন করুন
-- "Add Link" বাটনে ক্লিক করুন
-- লিংকে ক্লিক করলে স্বয়ংক্রিয়ভাবে ট্র্যাক হবে
+Dashboard data persists in the current browser's `localStorage`, scoped to the site origin and browser profile. It is not synchronized across devices or users. Clearing browser site data removes it.
 
-**ট্র্যাকিং দেখতে:**
-- "📱 Click Tracking" ট্যাবে যান
-- সব ক্লিকের লগ টেবিল দেখুন
-- "Export Data" বাটনে ক্লিক করে ডেটা সংরক্ষণ করুন
+## Development and tests
 
-**এনালিটিক্স দেখতে:**
-- "📊 Analytics" ট্যাবে যান
-- ডিভাইস ব্রেকডাউন এবং টপ ডোমেইন দেখুন
+Requires Node.js 20 or later for the test and validation scripts. The dashboard itself does not require Node.js.
 
-## 💾 ডেটা সংরক্ষণ
+```bash
+npm run validate
+npm test
+```
 
-সব ডেটা ব্রাউজারের **Local Storage** এ সংরক্ষিত থাকে। পেজ রিফ্রেশ করলেও ডেটা হারায় না।
+The GitHub Actions workflow runs the validation and test scripts for pushes and pull requests targeting `main`.
 
-## 📱 রেসপন্সিভ ডিজাইন
+## Security and privacy
 
-ড্যাশবোর্ড সব ডিভাইসে সুন্দরভাবে কাজ করে:
-- 🖥️ ডেস্কটপ
-- 📱 ট্যাবলেট
-- 📲 মোবাইল ফোন
+- This is a front-end demonstration, **not a production admin system**. It has no authentication, authorization, server-side validation, or shared database.
+- Do not use it to store secrets, personal information, or other sensitive data. Browser `localStorage` is not encrypted and can be read or changed by the user or by scripts running on the same origin.
+- The click-log IP address is fabricated and must not be interpreted as a visitor's real IP. The app does not collect real IP addresses.
+- The feed messages are generated locally and are not evidence of server health, backups, synchronization, or domain monitoring.
+- Saved links are restricted to HTTP and HTTPS. Links that open in a new tab use `noopener noreferrer`.
+- Before any real deployment, add server-side authentication and authorization, validate and persist data on a trusted backend, use HTTPS, and define an appropriate privacy and data-retention policy.
 
-## 🎨 প্রযুক্তি
+## Project files
 
-- **HTML5**: স্ট্রাকচার
-- **CSS3**: স্টাইলিং এবং রেসপন্সিভ ডিজাইন
-- **JavaScript (Vanilla)**: ডায়নামিক ফাংশনালিটি
-- **Local Storage**: ডেটা পার্সিস্টেন্স
-
-## 📊 লাইভ ফিচার
-
-- **5-সেকেন্ড আপডেট**: প্রতি 5 সেকেন্ডে নতুন ফিড মেসেজ
-- **রিয়েল-টাইম স্ট্যাটিস্টিক্স**: সব মেট্রিক্স লাইভ আপডেট হয়
-- **Pulsing Badge**: লাইভ স্ট্যাটাস ইন্ডিকেটর
-
-## 🔐 নিরাপত্তা বিবেচনা
-
-এটি একটি ডেমো প্রোজেক্ট। প্রোডাকশনে ব্যবহারের আগে:
-- ইউজার অথেন্টিকেশন যোগ করুন
-- ব্যাকেন্ড এপিআই সেটআপ করুন
-- ডেটা এনক্রিপশন যোগ করুন
-- HTTPS ব্যবহার করুন
-
-## 📝 লাইসেন্স
-
-MIT License - স্বাধীনভাবে ব্যবহার এবং পরিবর্তন করুন
-
-## 🤝 অবদান
-
-ইস্যু রিপোর্ট করতে বা নতুন ফিচার যোগ করতে গিটহাব ইস্যু খুলুন।
-
----
-
-**তৈরি করা হয়েছে ❤️ দিয়ে**
+- `index.html` — dashboard structure and accessible labels.
+- `style.css` — responsive visual design.
+- `app.js` — browser-side behavior and local storage.
+- `test/project.test.js` — lightweight project integrity checks.
+- `.github/workflows/deno.yml` — Node.js CI workflow.

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#10131f">
-    <meta name="description" content="Live administration dashboard for domains, links, tracking, and analytics.">
-    <title>Nexus — Live Admin Dashboard</title>
+    <meta name="description" content="A local demo dashboard for organizing domains and links and exploring sample analytics.">
+    <title>Nexus — Admin Dashboard Demo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -45,8 +45,8 @@
             <div class="sidebar-footer">
                 <span class="presence-dot" aria-hidden="true"></span>
                 <div>
-                    <strong>System operational</strong>
-                    <small>All services live</small>
+                    <strong>Demo environment</strong>
+                    <small>Local browser only</small>
                 </div>
             </div>
         </aside>
@@ -54,14 +54,14 @@
         <main class="main-content">
             <header class="header">
                 <div>
-                    <p class="eyebrow">Workspace / Live operations</p>
+                    <p class="eyebrow">Workspace / Overview</p>
                     <h1>Good morning, Admin</h1>
                 </div>
                 <div class="header-actions">
                     <span id="live-status" class="live-badge" role="status">
-                        <span aria-hidden="true"></span> Live
+                        <span aria-hidden="true"></span> Local demo
                     </span>
-                    <span id="last-update" class="last-update">Updated just now</span>
+                    <span id="last-update" class="last-update">Sample events only</span>
                 </div>
             </header>
 
@@ -77,11 +77,11 @@
                     </article>
                     <article class="stat-card accent-green">
                         <div class="stat-heading">
-                            <span>Active domains</span>
+                            <span>Saved domains</span>
                             <span class="stat-icon" aria-hidden="true">◎</span>
                         </div>
                         <div class="stat-value" id="active-domains">0</div>
-                        <div class="stat-trend">Currently monitored</div>
+                        <div class="stat-trend">Saved in this browser</div>
                     </article>
                     <article class="stat-card accent-blue">
                         <div class="stat-heading">
@@ -104,10 +104,10 @@
                 <section class="panel live-feed-container">
                     <div class="panel-header">
                         <div>
-                            <p class="panel-kicker">Real-time activity</p>
-                            <h2>Live data feed</h2>
+                            <p class="panel-kicker">Simulated activity</p>
+                            <h2>Demo activity feed</h2>
                         </div>
-                        <span class="refresh-label">Refreshes every 5 sec</span>
+                        <span class="refresh-label">Sample events every 5 sec</span>
                     </div>
                     <div id="live-feed" class="live-feed" aria-live="polite"></div>
                 </section>

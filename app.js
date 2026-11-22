@@ -60,18 +60,16 @@ function switchTab(tabName, button) {
     }
 }
 
-// Live Data Feed (Updates Every 5 Seconds)
+// Generate sample feed entries locally every five seconds.
 function startLiveDataFeed() {
     setInterval(() => {
         const feed = document.getElementById('live-feed');
         const messages = [
-            '✅ Domain monitored successfully',
-            '🔗 New link added to tracking',
-            '📊 Analytics data updated',
-            '📱 Mobile click detected',
-            '🌐 Server health check: OK',
-            '🔄 Sync completed',
-            '💾 Data backup completed'
+            'Sample activity event generated',
+            'Local dashboard preview is active',
+            'Demo analytics event refreshed',
+            'Sample link activity generated',
+            'Demo feed is running locally'
         ];
 
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
@@ -92,7 +90,7 @@ function startLiveDataFeed() {
         }
 
         // Update timestamp
-        document.getElementById('last-update').textContent = `Last Update: ${timestamp}`;
+        document.getElementById('last-update').textContent = `Demo event · ${timestamp}`;
     }, 5000);
 }
 

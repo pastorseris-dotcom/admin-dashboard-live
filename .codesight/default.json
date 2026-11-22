@@ -1,0 +1,37 @@
+{
+  "id": {
+    "name": "default",
+    "location": "/workspaces/admin-dashboard-live/.codesight/default.json"
+  },
+  "buildToolConfig": {
+    "java": {}
+  },
+  "bridgeConfig": {
+    "source": {
+      "type": 7,
+      "location": "/workspaces/admin-dashboard-live/.codesight/default.json"
+    },
+    "scanTypes": [
+      0,
+      1
+    ]
+  },
+  "buildConfig": {},
+  "gitConfig": {
+    "diffScanReferenceBranch": {
+      "value": "main",
+      "source": {
+        "type": 7,
+        "location": "/workspaces/admin-dashboard-live/.codesight/default.json"
+      },
+      "expandedValue": "main"
+    },
+    "pathToGitRepository": {
+      "value": "/workspaces/admin-dashboard-live",
+      "source": {
+        "type": 7,
+        "location": "/workspaces/admin-dashboard-live/.codesight/default.json"
+      }
+    }
+  }
+}

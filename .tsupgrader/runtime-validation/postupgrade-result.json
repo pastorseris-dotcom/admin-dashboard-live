@@ -1,0 +1,85 @@
+{
+  "planHash": "6ffb7c05a0d938b7431ac870a0ffe322f47d37d298bf59a150e1489a977e244d",
+  "phase": "postupgrade",
+  "recordedAtUtc": "2026-11-22T19:19:42.3375916Z",
+  "retryCount": 0,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 683,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "source-syntax-valid",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\n\u003E admin-dashboard-live@1.0.0 validate\n\u003E node --check app.js \u0026\u0026 node test/project.test.js\n\n\u2714 project entry files exist and are linked (1.204537ms)\n\u2714 HTML element IDs referenced by JavaScript exist (1.540373ms)\n\u2714 URL validation rejects unsafe protocols (1.757979ms)\n\u2139 tests 3\n\u2139 suites 0\n\u2139 pass 3\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 11.773591\n",
+        "durationMs": 238
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\n\u003E admin-dashboard-live@1.0.0 test\n\u003E node --test\n\n\u2714 project entry files exist and are linked (5.513504ms)\n\u2714 HTML element IDs referenced by JavaScript exist (6.077316ms)\n\u2714 URL validation rejects unsafe protocols (6.046828ms)\n\u2139 tests 3\n\u2139 suites 0\n\u2139 pass 3\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 218.044104\n",
+        "durationMs": 444,
+        "testResults": {
+          "testFramework": "unknown",
+          "runnerDetectedFrom": "none",
+          "testsTotal": 0,
+          "testsPassed": 0,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": true
+        }
+      }
+    ],
+    "executions": [
+      {
+        "source": "setup[0]",
+        "resolvedExecutable": "/home/codespace/nvm/current/bin/npm",
+        "args": [
+          "install",
+          "--no-package-lock"
+        ],
+        "cwd": "/workspaces/admin-dashboard-live",
+        "env": {},
+        "prependPath": [],
+        "platform": "linux"
+      },
+      {
+        "source": "source-syntax-valid",
+        "resolvedExecutable": "/home/codespace/nvm/current/bin/npm",
+        "args": [
+          "run",
+          "validate"
+        ],
+        "cwd": "/workspaces/admin-dashboard-live",
+        "env": {},
+        "prependPath": [],
+        "platform": "linux"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "/home/codespace/nvm/current/bin/npm",
+        "args": [
+          "test"
+        ],
+        "cwd": "/workspaces/admin-dashboard-live",
+        "env": {},
+        "prependPath": [],
+        "platform": "linux"
+      }
+    ]
+  }
+}
